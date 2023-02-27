@@ -13,6 +13,7 @@
     <description>Java project made with springboot</description>
     <modules>
         <module>users-api</module>
+        <module>orders-api</module>
     </modules>
 
 
