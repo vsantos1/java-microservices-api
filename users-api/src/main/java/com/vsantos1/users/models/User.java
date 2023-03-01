@@ -10,13 +10,15 @@ import java.util.Date;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String cpf;
 
     @Column(name = "phone_number")
@@ -28,7 +30,8 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    public User(){}
+    public User() {
+    }
 
 
     public Long getId() {
