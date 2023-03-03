@@ -23,12 +23,12 @@ public class UserService {
     }
 
 
-
     public User findById(Long id) {
         Optional<User> optionalUser = this.userRepository.findById(id);
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
+        // Todo: implement custom exception
         throw new RuntimeException("User not found");
     }
 
@@ -44,5 +44,17 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public User update(Long id, UserDTO userDTO) {
+        User user = this.findById(id);
 
+        mapper.map(userDTO, user);
+
+        return this.userRepository.save(user);
+    }
+
+    public void delete(Long id) {
+        User user = this.findById(id);
+
+        this.userRepository.deleteById(user.getId());
+    }
 }

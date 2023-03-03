@@ -29,4 +29,15 @@ public class UserResource {
     public ResponseEntity<User> create(@RequestBody @Valid UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.execute(userDTO));
     }
+
+    @PutMapping(value = "/users/{user_id}")
+    public ResponseEntity<User> update(@RequestBody @Valid UserDTO userDTO, @PathVariable("user_id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, userDTO));
+    }
+
+    @DeleteMapping(value = "/users/{user_id}")
+    public ResponseEntity<Void> delete(@PathVariable("user_id") Long id) {
+        userService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

@@ -37,8 +37,8 @@ public class ErrorDTO {
         return path;
     }
 
-    public HttpStatus getStatus() {
-        return status;
+    public Integer getStatus() {
+        return status.value();
     }
 }
 
