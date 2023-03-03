@@ -13,11 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 
 @RestControllerAdvice
-public class ValidatorExceptionHandler {
+public class CustomResponseEntityHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorDTO> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
         HashMap<String, String> errors = new HashMap<>();
 
@@ -25,15 +25,28 @@ public class ValidatorExceptionHandler {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
 
-        ErrorDTO errorDTO = new ErrorDTO(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date(),
                 "Validation error",
-                errors,
+                HttpStatus.BAD_REQUEST,
                 request.getRequestURI(),
-                HttpStatus.BAD_REQUEST
+                errors
+
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, HttpServletRequest request) {
+        HashMap<String, String> errors = new HashMap<>();
+
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI(), errors);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+
     }
 
 }

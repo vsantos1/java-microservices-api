@@ -1,6 +1,7 @@
 package com.vsantos1.users.services;
 
 import com.vsantos1.users.dtos.UserDTO;
+import com.vsantos1.users.exceptions.ResourceNotFoundException;
 import com.vsantos1.users.models.User;
 import com.vsantos1.users.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
-        // Todo: implement custom exception
-        throw new RuntimeException("User not found");
+        throw new ResourceNotFoundException("User not found");
     }
 
     public User execute(UserDTO userDTO) {
